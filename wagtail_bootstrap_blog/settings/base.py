@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import dj_database_url
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
@@ -45,7 +46,7 @@ INSTALLED_APPS = [
     'wagtail.contrib.routable_page',
     'wagtail.contrib.postgres_search',
     'wagtail.contrib.modeladmin',
-    
+
     'modelcluster',
     'taggit',
     'django_extensions',
@@ -105,17 +106,23 @@ WSGI_APPLICATION = 'wagtail_bootstrap_blog.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
+database_uri = os.environ["DATABASE_URI"]
 DATABASES = {
-    "default": {
-        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
-        "NAME": os.environ.get("SQL_DATABASE", os.path.join(BASE_DIR, "db.sqlite3")),
-        "USER": os.environ.get("SQL_USER", "user"),
-        "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
-        "HOST": os.environ.get("SQL_HOST", "localhost"),
-        "PORT": os.environ.get("SQL_PORT", "5432"),
-    }
+    'default': dj_database_url.config(
+        default=database_uri
+    )
 }
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.postgresql"),
+#         "NAME": os.environ.get("SQL_DATABASE", "wagtail_bootstrap_blog"),
+#         "USER": os.environ.get("SQL_USER", "wagtail_bootstrap_blog"),
+#         "PASSWORD": os.environ.get("SQL_PASSWORD", "wagtail_bootstrap_blog"),
+#         "HOST": os.environ.get("SQL_HOST", "localhost"),
+#         "PORT": os.environ.get("SQL_PORT", "5432"),
+#     }
+# }
 
 
 # Password validation
